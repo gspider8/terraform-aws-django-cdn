@@ -10,10 +10,11 @@ test_defaults:
 
 # The set of tests to run to verify your module works correctly
 tests:
-  - name: example-main
-    project_root: examples/main
-    environment:
-      TF_VAR_create_iam_user: true
+# this test does not work because spacelift test env does not have permission to create users.
+#  - name: example-main
+#    project_root: examples/main
+#    environment:
+#      TF_VAR_create_iam_user: true
 
   - name: example-main-no-iam
     project_root: examples/main
