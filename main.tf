@@ -25,23 +25,23 @@ data "aws_cloudfront_response_headers_policy" "simple_cors" {
 
 resource "aws_cloudfront_distribution" "main" {
   origin {
-    domain_name = aws_s3_bucket.main.bucket_regional_domain_name
-    origin_id   = var.origin_id
+    domain_name              = aws_s3_bucket.main.bucket_regional_domain_name
+    origin_id                = var.origin_id
     origin_access_control_id = aws_cloudfront_origin_access_control.main.id
 
     origin_shield {
-      enabled = true
+      enabled              = true
       origin_shield_region = "us-east-1"
     }
   }
   enabled         = true
   is_ipv6_enabled = true
   default_cache_behavior {
-    target_origin_id = var.origin_id
+    target_origin_id           = var.origin_id
     response_headers_policy_id = data.aws_cloudfront_response_headers_policy.simple_cors.id
-    cache_policy_id = "4135ea2d-6df8-44a3-9df3-4b5a84be39ad" # CachingDisabled
-    allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
-    cached_methods   = ["GET", "HEAD"]
+    cache_policy_id            = "4135ea2d-6df8-44a3-9df3-4b5a84be39ad" # CachingDisabled
+    allowed_methods            = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
+    cached_methods             = ["GET", "HEAD"]
 
     viewer_protocol_policy = "https-only"
   }
@@ -66,10 +66,10 @@ resource "aws_cloudfront_origin_access_control" "main" {
 
 data "aws_iam_policy_document" "oac" {
   statement {
-    sid = "OAC"
+    sid    = "OAC"
     effect = "Allow"
     principals {
-      type = "Service"
+      type        = "Service"
       identifiers = ["cloudfront.amazonaws.com"]
     }
     actions = [
@@ -91,7 +91,7 @@ data "aws_iam_policy_document" "oac" {
 resource "aws_s3_bucket_policy" "oac" {
   bucket = aws_s3_bucket.main.id
   policy = data.aws_iam_policy_document.oac.json
-#   depends_on = [aws_s3_bucket_public_access_block.main]
+  #   depends_on = [aws_s3_bucket_public_access_block.main]
 }
 
 # -- iam --
@@ -125,9 +125,9 @@ data "aws_iam_policy_document" "django_user" {
 
 resource "aws_iam_user" "main" {
   count = var.iam_user.create ? 1 : 0
-  name = var.iam_user.name
-  path = "/users/"
-  tags = var.tags
+  name  = var.iam_user.name
+  path  = "/users/"
+  tags  = var.tags
 }
 
 resource "aws_iam_user_policy" "main" {

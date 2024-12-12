@@ -10,7 +10,7 @@ terraform {
 }
 
 provider "aws" {
-  region  = "us-east-1"
+  region = "us-east-1"
 }
 
 # --- Variables ---
@@ -29,13 +29,13 @@ module "django-cdn" {
 
   iam_user = {
     create = var.create_iam_user
-    name = "${var.project_name}-django-cdn-access"
+    name   = "${var.project_name}-django-cdn-access"
   }
 
-  tags= {
-    Terraform = "True"
+  tags = {
+    Terraform   = "True"
     Environment = "Development"
-    Project = var.project_name
+    Project     = var.project_name
   }
 }
 
